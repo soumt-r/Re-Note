@@ -163,7 +163,7 @@ impl Config {
             .set_default("https", true)?
             .set_default("publish_blocks", false)?
             .set_default("sled_path", "./sled/db-0-34")?
-            .set_default("source_repo", "https://git.asonix.dog/asonix/relay")?
+            .set_default("source_repo", "https://github.com/soumt-r/Re-Note")?
             .set_default("repository_commit_base", "/src/commit/")?
             .set_default("opentelemetry_url", None as Option<&str>)?
             .set_default("telegram_token", None as Option<&str>)?

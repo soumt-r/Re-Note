@@ -1,32 +1,11 @@
-# AodeRelay
+# Re;Note (An Ui-customized AodeRelay)
 _A simple and efficient activitypub relay_
 
 ### Installation
-#### Docker
-If running docker, you can start the relay with the following command:
-```
-$ sudo docker run --rm -it \
-    -v "$(pwd):/mnt/" \
-    -e ADDR=0.0.0.0 \
-    -e SLED_PATH=/mnt/sled/db-0.34 \
-    -p 8080:8080 \
-    asonix/relay:0.3.85
-```
-This will launch the relay with the database stored in "./sled/db-0.34" and listening on port 8080
-#### Cargo
-With cargo installed, the relay can be installed to your cargo bin directory with the following command
-```
-$ cargo install ap-relay
-```
-Then it can be run with this:
-```
-$ ADDR=0.0.0.0 relay
-```
-This will launch the relay with the database stored in "./sled/db-0.34" and listening on port 8080
 #### Source
 The relay can be launched directly from this git repository with the following commands:
 ```
-$ git clone https://git.asonix.dog/asonix/relay
+$ git clone https://github.com/soumt-r/Re-Note
 $ ADDR=0.0.0.0 cargo run --release
 ```
 
