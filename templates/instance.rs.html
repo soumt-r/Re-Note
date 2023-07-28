@@ -4,7 +4,7 @@
 @(instance: &Instance, software: Option<&str>, contact: Option<&Contact>, base: &IriString)
 
     <div class="server-box">
-      <div class="server-profile @if instance.reg{@if instance.requires_approval{req_approve}else{open}}else{closed}">
+      <div class="server-profile @if instance.reg { @if instance.requires_approval { req_approve }else{ open } }else{ closed }">
         <a href="@base" target="_blank"><h1 class="server-name">@instance.title</h1></a>
         @if let Some(software) = software {
           <p class="server-info">@software / @instance.version</p>
