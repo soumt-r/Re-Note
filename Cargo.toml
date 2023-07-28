@@ -1,11 +1,11 @@
 [package]
-name = "ap-relay"
-description = "A simple activitypub relay"
+name = "re-note"
+description = "A simple activitypub relay based on AodeRelay"
 version = "0.3.91"
-authors = ["asonix <asonix@asonix.dog>"]
+authors = ["soumt <soumt@rerac.dev>"]
 license = "AGPL-3.0"
 readme = "README.md"
-repository = "https://git.asonix.dog/asonix/ap-relay"
+repository = "https://github.com/soumt-r/Re-Note"
 keywords = ["activitypub", "relay"]
 edition = "2021"
 build = "src/build.rs"
