@@ -3,35 +3,20 @@
 
 @(instance: &Instance, software: Option<&str>, contact: Option<&Contact>, base: &IriString)
 
-    <section class="instance">
-      <h4 class="padded"><a href="@base">@instance.title</a></h4>
-      <p class="padded">
+    <div class="server-box">
+      <div class="server-profile @if instance.reg{@if instance.requires_approval{req_approve}else{open}}else{closed}">
+        <a href="@base" target="_blank"><h1 class="server-name">@instance.title</h1></a>
         @if let Some(software) = software {
-        Running @software, version @instance.version.
+          <p class="server-info">@software / @instance.version</p>
         }
-        @if instance.reg {
-        <br>Registration is open.
-        @if instance.requires_approval {
-        Accounts must be approved by an admin.
-        }
-        } else{
-        Registration is closed
-        }
-      </p>
-      @if !instance.description.trim().is_empty() || contact.is_some() {
-      <div class="instance-info">
-        @if !instance.description.trim().is_empty() {
-        <h5 class="instance-description">@instance.title's description:</h5>
-        <div class="description">
-          <div class="please-stay">
-            @Html(instance.description.trim())
-          </div>
-        </div>
-        }
+        
         @if let Some(contact) = contact {
-        <h5 class="instance-admin">@instance.title's admin:</h5>
-        @:admin_html(contact, base)
+          @:admin_html(contact, base)
         }
       </div>
-      }
-    </section>
+      <div class="server-description">
+        <p>
+          @Html(instance.description.trim())
+        </p>
+      </div>
+    </div>

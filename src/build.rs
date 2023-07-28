@@ -50,7 +50,11 @@ fn main() -> Result<(), anyhow::Error> {
 
     let mut ructe = Ructe::from_env()?;
     let mut statics = ructe.statics()?;
-    statics.add_sass_file("scss/index.scss")?;
+    //statics.add_sass_file("scss/index.scss")?;
+    statics.add_file("static/index.css");
+    statics.add_file("static/index.js");
+    statics.add_file("static/rera.png");
+
     ructe.compile_templates("templates")?;
 
     Ok(())

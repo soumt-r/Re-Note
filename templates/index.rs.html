@@ -6,119 +6,146 @@ templates::{info_html, instance_html, statics::index_css},
 
 @(local: &[Node], nodes: &[Node], config: &Config)
 
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- favicon -->
+    <link rel="shortcut icon" href="/static/@rera_png.name" type="image/x-icon">
+    <title>@config.hostname() | ActivityPub Relay</title>
 
-<head lang="en">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>@config.hostname() | ActivityPub Relay</title>
-  <link rel="stylesheet" href="/static/@index_css.name" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="/static/@main_css.name">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
 </head>
-
 <body>
-  <header>
-    <div class="header-text">
-      <h1>@Config::software_name()<span class="smaller">@Config::software_version()</span></h1>
-      <p>on @config.hostname()</p>
+  <div class="main-nav">
+    <div class="nav-item-wrapper">
+      <div class="logo-box">
+        <img src="/static/@rera_png.name" alt="logo" class="logo" >
+        
+      </div>
+      <h3 class="sub-title">An <strong>ui-customized</strong> @Config::software_name()</h3>
+      <h1 class="title">Re;Note<span class="sub-title"> @Config::software_version()</span>
+      </h1> 
     </div>
-  </header>
-  <main>
-    @if !local.is_empty() || config.local_blurb().is_some() {
-    <article>
-      <h3>About</h3>
-      <section class="local-explainer">
-        @if let Some(blurb) = config.local_blurb() {
-        @blurb
-        } else {
-        <p>These domains are run by the same admins as this relay.</p>
-        }
-      </section>
-      @if !local.is_empty() {
-      <ul>
-        @for node in local {
-        @if let Some(inst) = node.instance.as_ref() {
-        <li>
-          @:instance_html(inst, node.info.as_ref().map(|info| { info.software.as_ref() }), node.contact.as_ref(),
-          &node.base)
-        </li>
-        } else {
-        @if let Some(inf) = node.info.as_ref() {
-        <li>
-          @:info_html(inf, &node.base)
-        </li>
-        }
-        }
-        }
-      </ul>
-      }
-    </article>
-    }
-    <article>
-      <h3>Joining</h3>
-      <section class="joining">
-        @if config.restricted_mode() {
-        <h4>
-          This relay is Restricted
-        </h4>
-        <p>
-          This relay is currently in Restricted Mode, which means servers need to be approved ahead of time by the relay
-          administrator. Please contact the admin before attempting to join.
-        </p>
-        } else {
-        <p>
-          If you are the admin of a server that supports activitypub relays, you can add
-          this relay to your server.
-        </p>
-        }
-        <h4>Mastodon</h4>
-        <p>
-          Mastodon admins can add this relay by adding
-        <pre>@config.generate_url(UrlKind::Inbox)</pre> in their relay settings.
-        </p>
-        <h4>Pleroma</h4>
-        <p>
-          Pleroma admins can add this relay by adding
-        <pre>@config.generate_url(UrlKind::Actor)</pre> to their relay settings.
-        </p>
-        <h4>Others</h4>
-        <p>
-          Consult the documentation for your server. It's likely that it follows either
-          Mastodon or Pleroma's relay formatting.
-        </p>
-      </section>
-    </article>
-    @if !nodes.is_empty() {
-    <article>
-      <h3>@nodes.len() Connected Servers</h3>
-      <ul>
-        @for node in nodes {
-        @if let Some(inst) = node.instance.as_ref() {
-        <li>
-          @:instance_html(inst, node.info.as_ref().map(|info| { info.software.as_ref() }), node.contact.as_ref(),
-          &node.base)
-        </li>
-        } else {
-        @if let Some(inf) = node.info.as_ref() {
-        <li>
-          @:info_html(inf, &node.base)
-        </li>
-        }
-        }
-        }
-      </ul>
-    </article>
-    }
-  </main>
-  <footer>
-    @if let Some(blurb) = config.footer_blurb() {
-    <div>@blurb</div>
-    }
-    <p>
-      The source code for this project can be found at
-      <a href="@config.source_code()">@config.source_code()</a>
-    </p>
-  </footer>
-</body>
 
+    
+    <div class="tab-buttons-box">
+      <div class="tab-button active" id="tab-button-home">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </div>
+
+      
+      <div class="tab-button" id="tab-button-about">
+        <i class="fas fa-server"></i>
+        <span>Connected</span>
+      </div>
+
+      <!--github new tab-->
+      <div class="tab-button hide-mob"  onclick="window.open('@config.source_code()')">
+        <i class="fab fa-git-alt"></i>
+        <span>Git Repo</span>
+        <!-- 외부 접속 표시 -->
+        <i class="fas fa-external-link-alt"></i>
+      </div>  
+    </div>
+
+    
+    
+  </div>
+  <div class="tabs-wrapper">
+    <div id="tab-home" class="tab row active">
+      <div class ="inner-tab row-two column-one">
+        <div class="title-box">
+          <h1 class="title">About this Relay</h1>
+        </div>
+        <div class="tab-box">
+          <div class="info-box">
+          @if let Some(blurb) = config.local_blurb() {
+              @blurb
+          }
+          </div>
+        </div>
+      </div>
+      <div class ="inner-tab row-two column-one">
+        <div class="title-box">
+          <h1 class="title">How to Join</h1>
+        </div>
+        <div class="tab-box">
+          <div class="info-box">
+            @if config.restricted_mode() {
+              <h4>
+                이 릴레이는 현재 <strong>제한 모드</strong>로 운영중입니다.
+              </h4>
+              <p>
+                제한 모드는 연결하고자 하는 서버가 릴레이의 <strong>허용 목록</strong>에 등록되어 있을 경우에만 연결이 가능합니다.
+              </p>
+              } else {
+              <p>
+                ActivityPub 서버의 운영자는 자유롭게 본 릴레이에 연결할 수 있습니다.
+              </p>
+            }
+            
+            
+            <br>
+            <h4>Mastodon / Misskey</h4>
+            <p>
+              Mastodon 또는 Misskey 관리자는 릴레이 설정에 다음을 추가하여야 해요.
+            <pre>@config.generate_url(UrlKind::Inbox)</pre> 
+            </p>
+            <h4>Pleroma</h4>
+            <p>
+              Pleroma 관리자는 릴레이 설정에 다음을 추가하여야 해요.
+            <pre>@config.generate_url(UrlKind::Actor)</pre>
+            </p>
+            <h4>기타</h4>
+            <p>
+              서버 구현체의 문서를 참고하시여, Mastodon 혹은 Pleroma 호환 릴레이 설정 가능한지 확인해주세요.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    
+    <div id="tab-about" class="tab row">
+      
+      <div class="inner-tab row-one column-one">
+      <div class="title-box">
+        <h1 class="title">Connected Servers - @if !nodes.is_empty() {@nodes.len()}else{None}</h1>
+      </div>
+      <div class="tab-box">
+        <div class="server-list-box">
+
+          @if !nodes.is_empty() {
+            @for node in nodes {
+            @if let Some(inst) = node.instance.as_ref() {
+
+            @:instance_html(inst, node.info.as_ref().map(|info| { info.software.as_ref() }), node.contact.as_ref(),
+            &node.base)
+
+            } else {
+            @if let Some(inf) = node.info.as_ref() {
+
+            @:info_html(inf, &node.base)
+
+            }
+            }
+            }
+            }
+
+        </div>
+      </div>
+      </div>
+    </div>
+
+  </div>
+  
+  <script type="text/javascript" src="static/main_js.name"></script>
+</body>
 </html>
